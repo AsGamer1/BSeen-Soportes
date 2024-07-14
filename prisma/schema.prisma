@@ -13,3 +13,56 @@ model usuario {
   rol      String @default("USER")
   password String
 }
+
+model lugar {
+  id           Int            @id @default(autoincrement())
+  nombre       String
+  lat          Float
+  lon          Float
+  localizacion localizacion[]
+
+  @@unique([lat, lon])
+}
+
+model categoria {
+  id     Int    @id @default(autoincrement())
+  nombre String
+  svg    String
+  tipo   tipo[]
+}
+
+model tipo {
+  id           Int       @id @default(autoincrement())
+  nombre       String
+  svg          String
+  categoria_id Int
+  categoria    categoria @relation(fields: [categoria_id], references: [id])
+  soporte      soporte[]
+}
+
+model soporte {
+  id       Int     @id @default(autoincrement())
+  modelo   String?
+  pulgadas Int?
+  imagen   String
+  tipo_id  Int
+  tipo     tipo    @relation(fields: [tipo_id], references: [id])
+  item     item[]
+}
+
+model item {
+  id           Int            @id @default(autoincrement())
+  nombre       String
+  soporte_id   Int
+  soporte      soporte        @relation(fields: [soporte_id], references: [id])
+  localizacion localizacion[]
+}
+
+model localizacion {
+  id       Int      @id @default(autoincrement())
+  fecha    DateTime
+  item_id  Int
+  item     item     @relation(fields: [item_id], references: [id])
+  lugar_id Int
+  lugar    lugar    @relation(fields: [lugar_id], references: [id])
+}
