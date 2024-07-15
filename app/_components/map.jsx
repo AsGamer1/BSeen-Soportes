@@ -1,17 +1,35 @@
 "use client";
 
-// IMPORTANT: the order matters!
+import { useEffect, useState } from "react";
+import { getAllLugares } from "@/actions/get-lugares";
+import { Room } from '@mui/icons-material';
+import { MapContainer, Popup, TileLayer } from "react-leaflet";
+import MarkerClusterGroup from 'react-leaflet-cluster'
+import { Marker } from '@adamscybot/react-leaflet-component-marker';
 import "leaflet/dist/leaflet.css";
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
-import "leaflet-defaulticon-compatibility";
 
-import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
+function Points() {
+  const [lugares, setLugares] = useState([]);
 
-function MyComponent() {
-  const map = useMap();
-  const bounds = [[0, 0], [1, 1]]
-  map.fitBounds(bounds)
-  return null
+  useEffect(() => {
+    async function fetchLugares() {
+      const lugaresData = await getAllLugares();
+      setLugares(lugaresData);
+    }
+
+    fetchLugares();
+  }, []);
+
+  return (
+    lugares &&
+    lugares.map((point) => (
+      <Marker position={[point.lat, point.lon]} icon={<Room color="primary"/>}>
+        <Popup>
+          {point.nombre}
+        </Popup>
+      </Marker>
+    ))
+  );
 }
 
 export default function Map() {
@@ -31,8 +49,11 @@ export default function Map() {
         attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png"
       />
-      <MyComponent />
-      <Marker position={balearicCenter} />
+      <MarkerClusterGroup
+        chunkedLoading
+      >
+        <Points />
+      </MarkerClusterGroup>
     </MapContainer>
   );
 }

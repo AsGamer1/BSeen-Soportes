@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Grid, Stack } from "@mui/material";
-import Navbar from "./_components/navbar";
+import Navbar from "@/app/_components/navbar";
 import dynamic from "next/dynamic";
 const Map = dynamic(() => import("@/app/_components/map"), { ssr: false })
 

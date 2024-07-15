@@ -15,7 +15,7 @@ model usuario {
 }
 
 model lugar {
-  id           Int            @id @default(autoincrement())
+  id           String            @id @default(cuid())
   nombre       String
   lat          Float
   lon          Float
@@ -25,44 +25,44 @@ model lugar {
 }
 
 model categoria {
-  id     Int    @id @default(autoincrement())
+  id     String    @id @default(cuid())
   nombre String
   svg    String
   tipo   tipo[]
 }
 
 model tipo {
-  id           Int       @id @default(autoincrement())
+  id           String       @id @default(cuid())
   nombre       String
   svg          String
-  categoria_id Int
+  categoria_id String
   categoria    categoria @relation(fields: [categoria_id], references: [id])
   soporte      soporte[]
 }
 
 model soporte {
-  id       Int     @id @default(autoincrement())
+  id       String     @id @default(cuid())
   modelo   String?
   pulgadas Int?
   imagen   String
-  tipo_id  Int
+  tipo_id  String
   tipo     tipo    @relation(fields: [tipo_id], references: [id])
   item     item[]
 }
 
 model item {
-  id           Int            @id @default(autoincrement())
+  id           String            @id @default(cuid())
   nombre       String
-  soporte_id   Int
+  soporte_id   String
   soporte      soporte        @relation(fields: [soporte_id], references: [id])
   localizacion localizacion[]
 }
 
 model localizacion {
-  id       Int      @id @default(autoincrement())
+  id       String      @id @default(cuid())
   fecha    DateTime
-  item_id  Int
+  item_id  String
   item     item     @relation(fields: [item_id], references: [id])
-  lugar_id Int
+  lugar_id String
   lugar    lugar    @relation(fields: [lugar_id], references: [id])
 }
