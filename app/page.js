@@ -11,10 +11,10 @@ export default function Dashboard() {
     <Stack height="100dvh">
       <Navbar title={"Dashboard"} />
       <Grid container sx={{ padding: 2 }} flexGrow={1} flexShrink={1}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={8}>
           <Map />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <Box bgcolor="red" height="50%"></Box>
           <Box bgcolor="blue" height="50%"></Box>
         </Grid>

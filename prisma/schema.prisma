@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:dev.db"
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
 }
 
 model usuario {
@@ -15,7 +15,7 @@ model usuario {
 }
 
 model lugar {
-  id           String            @id @default(cuid())
+  id           String         @id @default(cuid())
   nombre       String
   lat          Float
   lon          Float
@@ -25,14 +25,14 @@ model lugar {
 }
 
 model categoria {
-  id     String    @id @default(cuid())
+  id     String @id @default(cuid())
   nombre String
   svg    String
   tipo   tipo[]
 }
 
 model tipo {
-  id           String       @id @default(cuid())
+  id           String    @id @default(cuid())
   nombre       String
   svg          String
   categoria_id String
@@ -41,7 +41,7 @@ model tipo {
 }
 
 model soporte {
-  id       String     @id @default(cuid())
+  id       String  @id @default(cuid())
   modelo   String?
   pulgadas Int?
   imagen   String
@@ -51,7 +51,7 @@ model soporte {
 }
 
 model item {
-  id           String            @id @default(cuid())
+  id           String         @id @default(cuid())
   nombre       String
   soporte_id   String
   soporte      soporte        @relation(fields: [soporte_id], references: [id])
@@ -59,7 +59,7 @@ model item {
 }
 
 model localizacion {
-  id       String      @id @default(cuid())
+  id       String   @id @default(cuid())
   fecha    DateTime
   item_id  String
   item     item     @relation(fields: [item_id], references: [id])
