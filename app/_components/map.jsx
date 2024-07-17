@@ -15,7 +15,7 @@ function Points() {
   useEffect(() => {
     async function fetchLugares() {
       const lugaresData = await getAllLugares();
-      map.fitBounds(lugaresData.map((point) => [point.lat, point.lon]))
+      map.fitBounds(lugaresData.map((point) => [point.lat, point.lon]), { padding: [50, 50] })
       setLugares(lugaresData);
     }
     fetchLugares()
@@ -68,27 +68,47 @@ function Points() {
     points: points,
     bounds: bounds,
     zoom: zoom,
+    options: {
+      radius: 150
+    }
   });
+
+  map.on("click", function (e) {
+    clusters.forEach((cluster) => {
+      cluster.properties.cluster_id
+    })
+  })
 
   return (
     clusters.map(cluster => {
       const [longitude, latitude] = cluster.geometry.coordinates;
-
-      const { cluster: isCluster, point_count, point_count_abbreviated } = cluster.properties
+      const { cluster: isCluster, point_count, point_count_abbreviated, cluster_id, pointId } = cluster.properties
 
       if (isCluster) {
         return (
           <Marker
             key={`cluster-${cluster.id}`}
             position={[latitude, longitude]}
-            icon={<div className={`marker-cluster marker-cluster-${point_count < 5 ? "small" : point_count < 10 ? "medium" : "large"}`}><div><span>{point_count_abbreviated}</span></div></div>}
+            icon={
+              <div
+                className={`marker-cluster marker-cluster-${point_count < 5 ? "small" : point_count < 10 ? "medium" : "large"}`}
+                onClick={() => {
+                  const expansionZoom = Math.ceil(supercluster.getClusterExpansionZoom(cluster_id)) + 1
+                  map.flyTo([latitude, longitude], expansionZoom)
+                }}
+              >
+                <div>
+                  <span>{point_count_abbreviated}</span>
+                </div>
+              </div>
+            }
           />
         );
       }
 
       return (
         <Marker
-          key={`point-${cluster.properties.pointId}`}
+          key={`point-${pointId}`}
           position={[latitude, longitude]}
           icon={<Room color="primary" fontSize="large" />}
         />
@@ -108,14 +128,14 @@ export default function Map() {
       bounds={balearicBounds}
       scrollWheelZoom={true}
       style={{ height: "100%", width: "100%" }}
+      zoomSnap={0.1}
       trackResize
     >
       <TileLayer
-        attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png"
       />
       <Points />
     </MapContainer>
   )
 }
-
