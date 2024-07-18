@@ -3,27 +3,33 @@
 import { useCallback, useEffect, useState } from "react";
 import { getAllLugares } from "@/actions/get-lugares";
 import { Room } from '@mui/icons-material';
-import { MapContainer, Popup, TileLayer, useMap } from "react-leaflet";
+import { LayerGroup, MapContainer, Popup, TileLayer, useMap, useMapEvent } from "react-leaflet";
 import { Marker } from '@adamscybot/react-leaflet-component-marker';
 import useSupercluster from "use-supercluster";
 import "leaflet/dist/leaflet.css";
 
 function Points() {
+  // Hook para utilizar el mapa actual
   const map = useMap();
 
+  // Estado que almacenará los puntos del mapa desde la base de datos usando la acción de servidor getAllLugares()
   const [lugares, setLugares] = useState([]);
   useEffect(() => {
     async function fetchLugares() {
       const lugaresData = await getAllLugares();
+      // Una vez obtenidos los lugares, se encuadra el mapa según los puntos que haya
       map.fitBounds(lugaresData.map((point) => [point.lat, point.lon]), { padding: [50, 50] })
       setLugares(lugaresData);
     }
     fetchLugares()
   }, []);
 
+  // Supercluster
+  // Estados que almacenan los bordes y el zoom del mapa
   const [bounds, setBounds] = useState(null);
   const [zoom, setZoom] = useState(12);
 
+  // Función para actualizar los estados con el estado del mapa actual
   function updateMap() {
     const b = map.getBounds();
     setBounds([
@@ -35,14 +41,17 @@ function Points() {
     setZoom(map.getZoom());
   }
 
+  // Callback para actualizar el mapa
   const onMove = useCallback(() => {
     updateMap();
   }, [map]);
 
+  // Efecto que actualiza el mapa cada vez que cambie
   useEffect(() => {
     updateMap();
   }, [map]);
 
+  // Efecto que llama al callback cada vez que el usuario se mueva por el mapa
   useEffect(() => {
     map.on("move", onMove);
     return () => {
@@ -54,7 +63,7 @@ function Points() {
     lugares.length > 0 &&
     lugares.map(point => ({
       type: "Feature",
-      properties: { cluster: false, pointId: point.id },
+      properties: { cluster: false, pointId: point.id, color: point.color },
       geometry: {
         type: "Point",
         coordinates: [
@@ -69,20 +78,14 @@ function Points() {
     bounds: bounds,
     zoom: zoom,
     options: {
-      radius: 150
+      radius: 0
     }
   });
-
-  map.on("click", function (e) {
-    clusters.forEach((cluster) => {
-      cluster.properties.cluster_id
-    })
-  })
 
   return (
     clusters.map(cluster => {
       const [longitude, latitude] = cluster.geometry.coordinates;
-      const { cluster: isCluster, point_count, point_count_abbreviated, cluster_id, pointId } = cluster.properties
+      const { cluster: isCluster, point_count, point_count_abbreviated, cluster_id, pointId, color } = cluster.properties
 
       if (isCluster) {
         return (
@@ -110,7 +113,7 @@ function Points() {
         <Marker
           key={`point-${pointId}`}
           position={[latitude, longitude]}
-          icon={<Room color="primary" fontSize="large" />}
+          icon={<Room sx={{color: color}} fontSize="large" onClick={()=>console.log(pointId)} />}
         />
       );
     })

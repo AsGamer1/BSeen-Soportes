@@ -7,12 +7,12 @@ export default function Navbar({ title }) {
       <Toolbar>
         <Typography variant="h6" component="h1" noWrap sx={{ flexGrow: 1 }}>{title}</Typography>
         <Tooltip title="Mapa">
-          <IconButton color="inherit">
+          <IconButton color="inherit" href="/">
             <LocationOn />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Reservar">
-          <IconButton color="inherit">
+        <Tooltip title="Lugares">
+          <IconButton color="inherit" href="/test">
             <BookmarkAdd />
           </IconButton>
         </Tooltip>
