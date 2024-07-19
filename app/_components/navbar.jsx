@@ -12,7 +12,7 @@ export default function Navbar({ title }) {
           </IconButton>
         </Tooltip>
         <Tooltip title="Lugares">
-          <IconButton color="inherit" href="/test">
+          <IconButton color="inherit" href="/add/lugar">
             <BookmarkAdd />
           </IconButton>
         </Tooltip>
