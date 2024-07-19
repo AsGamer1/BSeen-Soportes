@@ -19,7 +19,7 @@ export default async function RootLayout({ children }) {
         <body>
           <ThemeProvider theme={bseenTheme}>
             <Stack height="100dvh">
-              <Navbar session={session} title="test" />
+              <Navbar session={session} />
               {children}
             </Stack>
           </ThemeProvider>

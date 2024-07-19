@@ -1,15 +1,21 @@
 "use client";
 
-import { BookmarkAdd, LocationOn } from "@mui/icons-material";
+import { BookmarkAdd, LocationOn, Person } from "@mui/icons-material";
 import { AppBar, IconButton, Toolbar, Tooltip, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
-const AvatarLogin = dynamic(()=>import("@/app/_components/avatar-login"), { ssr: false })
+const AvatarLogin = dynamic(() => import("@/app/_components/avatar-login"), {
+  ssr: false,
+  loading: () =>
+    <IconButton color="inherit" href="/auth/login">
+      <Person />
+    </IconButton>
+})
 
-export default function Navbar({ title, session }) {
+export default function Navbar({ session }) {
   return (
     <AppBar position="sticky">
       <Toolbar>
-        <Typography variant="h6" component="h1" noWrap sx={{ flexGrow: 1 }}>{title}</Typography>
+        <Typography variant="h6" component="h1" noWrap sx={{ flexGrow: 1 }}>Soportes</Typography>
         <Tooltip title="Mapa">
           <IconButton color="inherit" href="/">
             <LocationOn />
@@ -20,9 +26,7 @@ export default function Navbar({ title, session }) {
             <BookmarkAdd />
           </IconButton>
         </Tooltip>
-        <Tooltip title="">
-          <AvatarLogin session={session} />
-        </Tooltip>
+        <AvatarLogin session={session} />
       </Toolbar>
     </AppBar>
   )
