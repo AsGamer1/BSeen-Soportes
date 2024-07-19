@@ -1,7 +1,11 @@
+"use client";
+
 import { BookmarkAdd, LocationOn } from "@mui/icons-material";
 import { AppBar, IconButton, Toolbar, Tooltip, Typography } from "@mui/material";
+import dynamic from "next/dynamic";
+const AvatarLogin = dynamic(()=>import("@/app/_components/avatar-login"), { ssr: false })
 
-export default function Navbar({ title }) {
+export default function Navbar({ title, session }) {
   return (
     <AppBar position="sticky">
       <Toolbar>
@@ -15,6 +19,9 @@ export default function Navbar({ title }) {
           <IconButton color="inherit" href="/add/lugar">
             <BookmarkAdd />
           </IconButton>
+        </Tooltip>
+        <Tooltip title="">
+          <AvatarLogin session={session} />
         </Tooltip>
       </Toolbar>
     </AppBar>

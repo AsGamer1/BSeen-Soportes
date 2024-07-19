@@ -32,8 +32,7 @@ export default function FormLugar() {
   }
 
   return (
-    <Stack height="100dvh">
-      <Navbar title={"Test"} />
+    <>
       <form onSubmit={handleSubmit(OnSubmit)} noValidate style={{ flex: "1 1 0%", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <Paper sx={{ padding: 2, margin: 2 }} elevation={5}>
           <Stack sx={{ justifyContent: "center", alignItems: "center", gap: 3 }}>
@@ -45,12 +44,12 @@ export default function FormLugar() {
           </Stack>
         </Paper>
       </form>
-      <Snackbar open={!!successResponse} autoHideDuration={4000} onClose={()=>setSuccessResponse("")}>
+      <Snackbar open={!!successResponse} autoHideDuration={4000} onClose={() => setSuccessResponse("")}>
         <Alert icon={<Check />} severity="success" variant="outlined">{successResponse}</Alert>
       </Snackbar>
-      <Snackbar open={!!errorResponse} autoHideDuration={4000} onClose={()=>setErrorResponse("")}>
+      <Snackbar open={!!errorResponse} autoHideDuration={4000} onClose={() => setErrorResponse("")}>
         <Alert icon={<Close />} severity="error" variant="outlined">{errorResponse}</Alert>
       </Snackbar>
-    </Stack >
+    </>
   );
 }

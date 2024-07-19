@@ -22,8 +22,6 @@ export async function registerUser(values) {
 
   await db.usuario.create({ data: { nombre: nombre, password: hashedPassword } })
 
-  return { success: "Usuario registrado" }
-
   try {
     await signIn("credentials", { nombre: nombre, password: password, redirectTo: DEFAULT_LOGIN_REDIRECT })
     return { success: "Usuario registrado, iniciando sesión..." }

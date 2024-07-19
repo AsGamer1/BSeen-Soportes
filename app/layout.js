@@ -5,7 +5,8 @@ import Head from "@/app/head";
 
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
-import { ThemeProvider } from "@mui/material";
+import { Stack, ThemeProvider } from "@mui/material";
+import Navbar from "./_components/navbar";
 
 export default async function RootLayout({ children }) {
 
@@ -17,7 +18,10 @@ export default async function RootLayout({ children }) {
         <Head />
         <body>
           <ThemeProvider theme={bseenTheme}>
-            {children}
+            <Stack height="100dvh">
+              <Navbar session={session} title="test" />
+              {children}
+            </Stack>
           </ThemeProvider>
         </body>
       </html>
