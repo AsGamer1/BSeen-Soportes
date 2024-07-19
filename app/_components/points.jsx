@@ -7,8 +7,9 @@ import { LayerGroup, MapContainer, Popup, TileLayer, useMap, useMapEvent } from 
 import { Marker } from '@adamscybot/react-leaflet-component-marker';
 import useSupercluster from "use-supercluster";
 import "leaflet/dist/leaflet.css";
+import { getSoportesFromLugar } from "@/actions/get-soportes";
 
-function Points() {
+export default function Points({ onMarkerClick }) {
   // Hook para utilizar el mapa actual
   const map = useMap();
 
@@ -113,32 +114,9 @@ function Points() {
         <Marker
           key={`point-${pointId}`}
           position={[latitude, longitude]}
-          icon={<Room sx={{color: color}} fontSize="large" onClick={()=>console.log(pointId)} />}
+          icon={<Room sx={{ color: color }} fontSize="large" onClick={() => getSoportesFromLugar(pointId).then((res) => onMarkerClick(res))} />}
         />
       );
     })
-  )
-
-}
-
-export default function Map() {
-  const balearicCenter = [39.616666666667, 2.8333333333333]
-  const balearicBounds = [[38.50433614907999, 1.0721927485111802], [40.332479659371735, 4.48429792166977]]
-
-  return (
-    <MapContainer
-      center={balearicCenter}
-      bounds={balearicBounds}
-      scrollWheelZoom={true}
-      style={{ height: "100%", width: "100%" }}
-      zoomSnap={0.1}
-      trackResize
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png"
-      />
-      <Points />
-    </MapContainer>
   )
 }

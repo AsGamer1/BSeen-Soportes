@@ -38,20 +38,20 @@ model grupo {
 }
 
 model lugar {
-  id           String         @id @default(cuid())
-  nombre       String
-  lat          Float
-  lon          Float
-  grupoId      String
-  grupo        grupo          @relation(fields: [grupoId], references: [id])
-  localizacion localizacion[]
+  id      String @id @default(cuid())
+  nombre  String
+  lat     Float
+  lon     Float
+  grupoId String
+  grupo   grupo  @relation(fields: [grupoId], references: [id])
+  item    item[]
 
   @@unique([lat, lon])
 }
 
-// SOPORTE: medio por el cuál se distribuye la publicidad
-// TIPO: describe el soporte: pantalla, televisor, videowall, valla, mural
-// CATEGORIA: cada uno de los tipos puede ser digitales o convencionales, dependiendo de qué categoría tengan se les asignará unas u otras propiedades al soporte
+// Soporte: medio por el cuál se distribuye la publicidad
+// Tipo: describe el soporte: pantalla, televisor, videowall, valla, mural
+// Categoria: cada uno de los tipos puede ser digitales o convencionales, dependiendo de qué categoría tengan se les asignará unas u otras propiedades al soporte
 
 enum categoria {
   DIGITAL
@@ -59,41 +59,37 @@ enum categoria {
 }
 
 model tipo {
-  id           String    @id @default(cuid())
-  nombre       String
-  svg          String
-  categoria_id String
-  categoria    categoria
-  soporte      soporte[]
-}
-
-model soporte {
   id                  String                @id @default(cuid())
-  tipo_id             String
-  tipo                tipo                  @relation(fields: [tipo_id], references: [id])
+  nombre              String
+  svg                 String
+  categoria           categoria
   soportedigital      soportedigital[]
   soporteconvencional soporteconvencional[]
 }
 
 model soportedigital {
-  id            String  @id @default(cuid())
+  id            String @id @default(cuid())
+  nombre        String
+  tipo_id       String
+  tipo          tipo   @relation(fields: [tipo_id], references: [id])
   pulgadas      Float
   pixeles_alto  Int
   pixeles_ancho Int
-  soporte_id    String
-  soporte       soporte @relation(fields: [soporte_id], references: [id])
   item          item[]
 }
 
 model soporteconvencional {
-  id         String  @id @default(cuid())
-  alto       Float
-  ancho      Float
-  espacios   Int // Soportes de una cara, de dos caras
-  soporte_id String
-  soporte    soporte @relation(fields: [soporte_id], references: [id])
-  item       item[]
+  id       String @id @default(cuid())
+  nombre   String
+  tipo_id  String
+  tipo     tipo   @relation(fields: [tipo_id], references: [id])
+  alto     Float
+  ancho    Float
+  espacios Int // Soportes de una cara, de dos caras
+  item     item[]
 }
+
+// Item: unidad de soporte digital o convencional que está instalada en un lugar
 
 model item {
   id                     String               @id @default(cuid())
@@ -102,14 +98,6 @@ model item {
   soportedigital         soportedigital?      @relation(fields: [soportedigital_id], references: [id])
   soporteconvencional_id String?
   soporteconvencional    soporteconvencional? @relation(fields: [soporteconvencional_id], references: [id])
-  localizacion           localizacion[]
-}
-
-model localizacion {
-  id       String   @id @default(cuid())
-  fecha    DateTime
-  item_id  String
-  item     item     @relation(fields: [item_id], references: [id])
-  lugar_id String
-  lugar    lugar    @relation(fields: [lugar_id], references: [id])
+  lugarId                String
+  lugar                  lugar                @relation(fields: [lugarId], references: [id])
 }
