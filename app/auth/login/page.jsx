@@ -1,7 +1,6 @@
 "use client";
 
-import { Alert, Avatar, Box, Button, Paper, Snackbar, Stack, TextField, Typography } from "@mui/material";
-import Navbar from "@/app/_components/navbar";
+import { Alert, Avatar, Button, Paper, Snackbar, Stack, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "@/schemas";
@@ -24,9 +23,6 @@ export default function FormLugar() {
   });
 
   const OnSubmit = (values) => {
-    setErrorResponse("");
-    setSuccessResponse("");
-
     startTransition(() => {
       login(values)
         .then((res) => {

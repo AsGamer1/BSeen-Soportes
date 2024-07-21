@@ -1,7 +1,6 @@
 "use client";
 
-import { Box, Grid, Stack, SvgIcon, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
-import Navbar from "@/app/_components/navbar";
+import { Box, Grid, Table, TableBody, TableCell, TableRow } from "@mui/material";
 import Points from "@/app/_components/points";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { useState } from "react";
@@ -38,13 +37,12 @@ export default function Dashboard() {
           </MapContainer>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Box height="50%" sx={{overflow: selectedLugar.length < 1 ? "hidden" : "scroll", scrollbarWidth: "thin"}}>
+          <Box height="50%" sx={{ overflow: selectedLugar.length < 1 ? "hidden" : "scroll", scrollbarWidth: "thin" }}>
             {selectedLugar &&
               <Table>
                 <TableBody>
                   {selectedLugar.map(soporte =>
                     <TableRow>
-                      <TableCell><SvgIcon>{soporte.svg}</SvgIcon></TableCell>
                       <TableCell>{soporte.nombre}</TableCell>
                       <TableCell>{soporte.soportedigital_id || soporte.soporteconvencional_id}</TableCell>
                       <TableCell>{soporte.lugarId}</TableCell>

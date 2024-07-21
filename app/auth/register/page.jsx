@@ -1,7 +1,6 @@
 "use client";
 
 import { Alert, Avatar, Button, Paper, Snackbar, Stack, TextField, Typography } from "@mui/material";
-import Navbar from "@/app/_components/navbar";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema } from "@/schemas";
