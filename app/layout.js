@@ -18,7 +18,7 @@ export default async function RootLayout({ children }) {
         <Head />
         <body>
           <ThemeProvider theme={bseenTheme}>
-            <Stack height="100dvh">
+            <Stack sx={{ height: { xs: "150dvh", md: "100dvh" } }}>
               <Navbar session={session} />
               {children}
             </Stack>

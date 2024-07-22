@@ -18,43 +18,41 @@ export default function Dashboard() {
   };
 
   return (
-    <>
-      <Grid container sx={{ padding: 2 }} flexGrow={1} flexShrink={1}>
-        <Grid item xs={12} md={6}>
-          <MapContainer
-            center={balearicCenter}
-            bounds={balearicBounds}
-            scrollWheelZoom={true}
-            style={{ height: "100%", width: "100%" }}
-            zoomSnap={0.1}
-            trackResize
-          >
-            <TileLayer
-              attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-              url="https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png"
-            />
-            <Points onMarkerClick={handleMarkerClick} />
-          </MapContainer>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Box height="50%" sx={{ overflow: selectedLugar.length < 1 ? "hidden" : "scroll", scrollbarWidth: "thin" }}>
-            {selectedLugar &&
-              <Table>
-                <TableBody>
-                  {selectedLugar.map(soporte =>
-                    <TableRow>
-                      <TableCell>{soporte.nombre}</TableCell>
-                      <TableCell>{soporte.soportedigital_id || soporte.soporteconvencional_id}</TableCell>
-                      <TableCell>{soporte.lugarId}</TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            }
-          </Box>
-          <Box bgcolor="blue" height="50%"></Box>
-        </Grid>
+    <Grid container sx={{ padding: 2 }} flexGrow={1} flexShrink={1}>
+      <Grid item xs={12} md={6}>
+        <MapContainer
+          center={balearicCenter}
+          bounds={balearicBounds}
+          scrollWheelZoom={true}
+          style={{ height: "100%", width: "100%" }}
+          zoomSnap={0.1}
+          trackResize
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            url="https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png"
+          />
+          <Points onMarkerClick={handleMarkerClick} />
+        </MapContainer>
       </Grid>
-    </>
+      <Grid item xs={12} md={6}>
+        <Box sx={{ height: "50%", overflow: selectedLugar.length < 1 ? "hidden" : "scroll", scrollbarWidth: "thin" }}>
+          {selectedLugar &&
+            <Table>
+              <TableBody>
+                {selectedLugar.map(soporte =>
+                  <TableRow>
+                    <TableCell>{soporte.nombre}</TableCell>
+                    <TableCell>{soporte.soportedigital_id || soporte.soporteconvencional_id}</TableCell>
+                    <TableCell>{soporte.lugarId}</TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          }
+        </Box>
+        <Box bgcolor="blue" sx={{ height: "50%" }}></Box>
+      </Grid>
+    </Grid>
   );
 }
