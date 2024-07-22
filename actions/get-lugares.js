@@ -8,11 +8,17 @@ async function getColorFromLugar(lugar) {
   return { ...lugar, color: color.hex }
 }
 
+async function getSoportesFromLugar(lugar) {
+  const items = await db.item.findMany({ where: { lugarId: lugar.id } })
+  return { ...lugar, soportes: items }
+}
+
 export async function getAllLugares() {
   try {
     const lugares = await db.lugar.findMany()
     const lugaresColores = await Promise.all(lugares.map(async (lugar) => await getColorFromLugar(lugar)))
-    return lugaresColores
+    const lugaresColoresSoportes = await Promise.all(lugaresColores.map(async (lugar) => await getSoportesFromLugar(lugar)))
+    return lugaresColoresSoportes
   } catch (error) {
     return null
   }

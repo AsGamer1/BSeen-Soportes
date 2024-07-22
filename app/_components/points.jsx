@@ -3,13 +3,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { getAllLugares } from "@/actions/get-lugares";
 import { Room } from '@mui/icons-material';
-import { LayerGroup, MapContainer, Popup, TileLayer, useMap, useMapEvent } from "react-leaflet";
+import { useMap } from "react-leaflet";
 import { Marker } from '@adamscybot/react-leaflet-component-marker';
 import useSupercluster from "use-supercluster";
 import "leaflet/dist/leaflet.css";
-import { getSoportesFromLugar } from "@/actions/get-soportes";
 
-export default function Points({ onMarkerClick }) {
+export default function Points({ setIsOpen, setMarker, setPoints }) {
   // Hook para utilizar el mapa actual
   const map = useMap();
 
@@ -64,7 +63,7 @@ export default function Points({ onMarkerClick }) {
     lugares.length > 0 &&
     lugares.map(point => ({
       type: "Feature",
-      properties: { cluster: false, pointId: point.id, color: point.color },
+      properties: { cluster: false, pointId: point.id, color: point.color, nombre: point.nombre, soportes: point.soportes },
       geometry: {
         type: "Point",
         coordinates: [
@@ -86,7 +85,7 @@ export default function Points({ onMarkerClick }) {
   return (
     clusters.map(cluster => {
       const [longitude, latitude] = cluster.geometry.coordinates;
-      const { cluster: isCluster, point_count, point_count_abbreviated, cluster_id, pointId, color } = cluster.properties
+      const { cluster: isCluster, point_count, point_count_abbreviated, cluster_id, pointId, color, nombre, soportes } = cluster.properties
 
       if (isCluster) {
         return (
@@ -114,7 +113,7 @@ export default function Points({ onMarkerClick }) {
         <Marker
           key={`point-${pointId}`}
           position={[latitude, longitude]}
-          icon={<Room sx={{ color: color }} fontSize="large" onClick={() => getSoportesFromLugar(pointId).then((res) => onMarkerClick(res))} />}
+          icon={<Room sx={{ color: color }} fontSize="large" onClick={() => { console.log(soportes);setMarker(nombre); setPoints(soportes); setIsOpen(true); }} />}
         />
       );
     })

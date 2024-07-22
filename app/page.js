@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Grid, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
+import { Drawer, Stack, Typography } from "@mui/material";
 import Points from "@/app/_components/points";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { useState } from "react";
@@ -10,51 +10,37 @@ export default function Dashboard() {
   const balearicCenter = [39.616666666667, 2.8333333333333]
   const balearicBounds = [[38.50433614907999, 1.0721927485111802], [40.332479659371735, 4.48429792166977]]
 
-  const [selectedLugar, setSelectedLugar] = useState([]);
-
-  const handleMarkerClick = (point) => {
-    setSelectedLugar(point);
-    console.log("Selected point:", point);
-  };
+  const [selectedLugar, setSelectedLugar] = useState("");
+  const [selectedSoportes, setSelectedSoportes] = useState([])
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Grid container sx={{ padding: 2 }} flexGrow={1} flexShrink={1}>
-      <Grid item xs={12} md={6}>
-        <MapContainer
-          center={balearicCenter}
-          bounds={balearicBounds}
-          scrollWheelZoom={true}
-          style={{ height: "100%", width: "100%" }}
-          zoomSnap={0.1}
-          trackResize
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png"
-          />
-          <Points onMarkerClick={handleMarkerClick} />
-        </MapContainer>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Box sx={{ height: "50%", overflow: selectedLugar.length < 1 ? "hidden" : "scroll", scrollbarWidth: "thin" }}>
-          {selectedLugar &&
+    <Stack sx={{ padding: 2, flexGrow: 1, flexShrink: 1, width: "80%", alignSelf: "center" }}>
+      <MapContainer
+        center={balearicCenter}
+        bounds={balearicBounds}
+        scrollWheelZoom={true}
+        style={{ height: "100%", width: "100%" }}
+        zoomSnap={0.1}
+        trackResize
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          url="https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png"
+        />
+        <Points setIsOpen={setIsOpen} setMarker={setSelectedLugar} setPoints={setSelectedSoportes} />
+      </MapContainer>
+      <Drawer anchor="right" open={isOpen} onClose={() => { setIsOpen(false); setSelectedLugar(""); setSelectedSoportes([]) }}>
+        <Stack sx={{ width: { md: "350px" }, overflow: "hidden" }}>
+          <Typography variant="h5" sx={{ padding: 3, bgcolor: "primary.main", minHeight: "2rem", textAlign: "center" }}>{selectedLugar}</Typography>
+          {selectedSoportes?.map(soporte =>
             <>
-              <Typography variant="h5">{selectedLugar.lugar}</Typography>
-              <Table>
-                <TableBody>
-                  {selectedLugar.map(soporte =>
-                    <TableRow>
-                      <TableCell>{soporte.soporte}</TableCell>
-                      <TableCell>{soporte.lugarId}</TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+              <Typography>{soporte.nombre}</Typography>
+              <Typography>{soporte.lugarId}</Typography>
             </>
-          }
-        </Box>
-        <Box bgcolor="blue" sx={{ height: "50%" }}></Box>
-      </Grid>
-    </Grid>
+          )}
+        </Stack>
+      </Drawer>
+    </Stack>
   );
 }
