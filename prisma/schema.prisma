@@ -21,37 +21,30 @@ model usuario {
   password String
 }
 
-// Lugar: punto del mapa categorizado por grupos y colores
-
-model color {
-  id    String  @id @default(cuid())
-  hex   String
-  grupo grupo[]
-}
+// Lugar: punto del mapa categorizado por grupos con colores
 
 model grupo {
-  id      String  @id @default(cuid())
-  nombre  String
-  colorId String
-  color   color   @relation(fields: [colorId], references: [id])
-  lugar   lugar[]
+  id       String  @id @default(cuid())
+  nombre   String
+  colorhex String
+  lugar    lugar[]
 }
 
 model lugar {
-  id      String @id @default(cuid())
-  nombre  String
-  lat     Float
-  lon     Float
-  grupoId String
-  grupo   grupo  @relation(fields: [grupoId], references: [id])
-  item    item[]
+  id       String    @id @default(cuid())
+  nombre   String
+  lat      Float
+  lon      Float
+  grupo_id String
+  grupo    grupo     @relation(fields: [grupo_id], references: [id])
+  item     soporte[]
 
   @@unique([lat, lon])
 }
 
 // Soporte: medio por el cuál se distribuye la publicidad
-// Tipo: describe el soporte: pantalla, televisor, videowall, valla, mural
-// Categoria: cada uno de los tipos puede ser digitales o convencionales, dependiendo de qué categoría tengan se les asignará unas u otras propiedades al soporte
+// Tipo: describe el soporte: pantalla vertical, pantalla horizontal, videowall, valla, mural
+// Espacio: hueco en el que se puede poner publicidad de los clientes: está ocupado el hueco? quién lo ocupa? hasta cuándo? desde cuándo?
 
 enum categoria {
   DIGITAL
@@ -59,45 +52,28 @@ enum categoria {
 }
 
 model tipo {
-  id                  String                @id @default(cuid())
-  nombre              String
-  svg                 String
-  categoria           categoria
-  soportedigital      soportedigital[]
-  soporteconvencional soporteconvencional[]
+  id        String    @id @default(cuid())
+  nombre    String
+  categoria categoria
+  item      soporte[]
 }
 
-model soportedigital {
-  id            String @id @default(cuid())
-  nombre        String
-  tipo_id       String
-  tipo          tipo   @relation(fields: [tipo_id], references: [id])
-  pulgadas      Float
-  pixeles_alto  Int
-  pixeles_ancho Int
-  item          item[]
+model espacio {
+  id             String    @id @default(cuid())
+  disponibilidad Boolean
+  cliente        String?
+  fecha_inicio   DateTime?
+  fecha_fin      DateTime?
+  soporte        soporte[]
 }
 
-model soporteconvencional {
-  id       String @id @default(cuid())
-  nombre   String
-  tipo_id  String
-  tipo     tipo   @relation(fields: [tipo_id], references: [id])
-  alto     Float
-  ancho    Float
-  espacios Int // Soportes de una cara, de dos caras
-  item     item[]
-}
-
-// Item: unidad de soporte digital o convencional que está instalada en un lugar
-
-model item {
-  id                     String               @id @default(cuid())
-  nombre                 String
-  soportedigital_id      String?
-  soportedigital         soportedigital?      @relation(fields: [soportedigital_id], references: [id])
-  soporteconvencional_id String?
-  soporteconvencional    soporteconvencional? @relation(fields: [soporteconvencional_id], references: [id])
-  lugarId                String
-  lugar                  lugar                @relation(fields: [lugarId], references: [id])
+model soporte {
+  id         String  @id @default(cuid())
+  cantidad   Int
+  espacio_id String
+  espacio    espacio @relation(fields: [espacio_id], references: [id])
+  tipo_id    String
+  tipo       tipo    @relation(fields: [tipo_id], references: [id])
+  lugar_id   String
+  lugar      lugar   @relation(fields: [lugar_id], references: [id])
 }

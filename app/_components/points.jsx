@@ -8,7 +8,7 @@ import { Marker } from '@adamscybot/react-leaflet-component-marker';
 import useSupercluster from "use-supercluster";
 import "leaflet/dist/leaflet.css";
 
-export default function Points({ setIsOpen, setMarker, setPoints }) {
+export default function Points({ setIsOpen, setMarker, setPoints, setColor }) {
   // Hook para utilizar el mapa actual
   const map = useMap();
 
@@ -18,7 +18,7 @@ export default function Points({ setIsOpen, setMarker, setPoints }) {
     async function fetchLugares() {
       const lugaresData = await getAllLugares();
       // Una vez obtenidos los lugares, se encuadra el mapa según los puntos que haya
-      map.fitBounds(lugaresData.map((point) => [point.lat, point.lon]), { padding: [50, 50] })
+      map.fitBounds(lugaresData.map((point) => [point.lat, point.lon]), { padding: [20, 20] })
       setLugares(lugaresData);
     }
     fetchLugares()
@@ -113,7 +113,7 @@ export default function Points({ setIsOpen, setMarker, setPoints }) {
         <Marker
           key={`point-${pointId}`}
           position={[latitude, longitude]}
-          icon={<Room sx={{ color: color }} fontSize="large" onClick={() => { console.log(soportes);setMarker(nombre); setPoints(soportes); setIsOpen(true); }} />}
+          icon={<Room sx={{ color: color }} fontSize="large" onClick={() => { console.log(soportes); setMarker(nombre); setPoints(soportes); setIsOpen(true); setColor(color) }} />}
         />
       );
     })

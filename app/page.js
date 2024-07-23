@@ -13,6 +13,7 @@ export default function Dashboard() {
   const [selectedLugar, setSelectedLugar] = useState("");
   const [selectedSoportes, setSelectedSoportes] = useState([])
   const [isOpen, setIsOpen] = useState(false);
+  const [color, setColor] = useState("primary.main")
 
   return (
     <Stack sx={{ padding: 2, flexGrow: 1, flexShrink: 1, width: "80%", alignSelf: "center" }}>
@@ -28,15 +29,15 @@ export default function Dashboard() {
           attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png"
         />
-        <Points setIsOpen={setIsOpen} setMarker={setSelectedLugar} setPoints={setSelectedSoportes} />
+        <Points setIsOpen={setIsOpen} setMarker={setSelectedLugar} setPoints={setSelectedSoportes} setColor={setColor} />
       </MapContainer>
       <Drawer anchor="right" open={isOpen} onClose={() => { setIsOpen(false); setSelectedLugar(""); setSelectedSoportes([]) }}>
-        <Stack sx={{ width: { md: "350px" }, overflow: "hidden" }}>
-          <Typography variant="h5" sx={{ padding: 3, bgcolor: "primary.main", minHeight: "2rem", textAlign: "center" }}>{selectedLugar}</Typography>
+        <Stack sx={{ width: "calc(min(320px, 70vw))", overflow: "hidden" }}>
+          <Typography variant="h6" sx={{ padding: 3, color: "white", bgcolor: color, minHeight: "2rem", textAlign: "center" }}>{selectedLugar}</Typography>
           {selectedSoportes?.map(soporte =>
             <>
               <Typography>{soporte.nombre}</Typography>
-              <Typography>{soporte.lugarId}</Typography>
+              <Typography>{soporte.tipo.nombre}</Typography>
             </>
           )}
         </Stack>
