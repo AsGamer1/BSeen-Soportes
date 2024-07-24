@@ -1,7 +1,4 @@
-export const publicRoutes = [
-  "/",
-  "/add/lugar"
-]
+export const publicRoutes = []
 
 export const authRoutes = [
   "/auth/login",
