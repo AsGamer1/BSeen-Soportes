@@ -6,7 +6,6 @@ import Head from "@/app/head";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { Stack, ThemeProvider } from "@mui/material";
-import Navbar from "./_components/navbar";
 
 export default async function RootLayout({ children }) {
 
@@ -19,7 +18,6 @@ export default async function RootLayout({ children }) {
         <body>
           <ThemeProvider theme={bseenTheme}>
             <Stack sx={{ height: "100dvh" }}>
-              <Navbar session={session} />
               {children}
             </Stack>
           </ThemeProvider>
