@@ -18,7 +18,7 @@ export default function Points({ setIsOpen, setMarker, setPoints, setColor }) {
     async function fetchLugares() {
       const lugaresData = await getAllLugares();
       // Una vez obtenidos los lugares, se encuadra el mapa según los puntos que haya
-      map.fitBounds(lugaresData.map((point) => [point.lat, point.lon]), { padding: [20, 20] })
+      map.fitBounds(lugaresData.map((point) => [point.lat, point.lon]), { padding: [30, 30] })
       setLugares(lugaresData);
     }
     fetchLugares()
