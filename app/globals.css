@@ -1,53 +1,100 @@
-input, textarea, select, button {
-  font-size: 16px;
+input,
+textarea,
+select,
+button {
+	font-size: 16px;
 }
+
 *:focus {
-  outline: none;
+	outline: none;
 }
-html, body {
-  margin: 0;
-  padding: 0;
+
+html,
+body {
+	margin: 0;
+	padding: 0;
 }
-.leaflet-marker-icon > div[data-react-component-marker="root"] {
+
+.leaflet-marker-icon>div[data-react-component-marker="root"] {
 	transform: translate(-50%, -80%) !important;
 }
-.marker-cluster-small {
-	background-color: rgba(181, 226, 140, 0.6);
-	}
-.marker-cluster-small div {
-	background-color: rgba(110, 204, 57, 0.6);
-	}
 
-.marker-cluster-medium {
-	background-color: rgba(241, 211, 87, 0.6);
-	}
-.marker-cluster-medium div {
-	background-color: rgba(240, 194, 12, 0.6);
-	}
+.marker-cluster-amarillo {
+	background-color: rgba(229, 175, 68, 0.6);
+}
 
-.marker-cluster-large {
-	background-color: rgba(253, 156, 115, 0.6);
-	}
-.marker-cluster-large div {
-	background-color: rgba(241, 128, 23, 0.6);
-	}
+.marker-cluster-amarillo div {
+	background-color: rgba(229, 175, 68, 0.8);
+}
+
+.marker-cluster-azul {
+	background-color: rgba(3, 157, 222, 0.6);
+}
+
+.marker-cluster-azul div {
+	background-color: rgba(3, 157, 222, 0.8);
+}
+
+.marker-cluster-gris {
+	background-color: rgba(84, 94, 86, 0.6);
+}
+
+.marker-cluster-gris div {
+	background-color: rgba(84, 94, 86, 0.8);
+}
+
+.marker-cluster-morado {
+	background-color: rgba(115, 59, 137, 0.6);
+}
+
+.marker-cluster-morado div {
+	background-color: rgba(115, 59, 137, 0.8);
+}
+
+.marker-cluster-rojo {
+	background-color: rgba(184, 12, 9, 0.6);
+}
+
+.marker-cluster-rojo div {
+	background-color: rgba(184, 12, 9, 0.8);
+}
+
+.marker-cluster-rosa {
+	background-color: rgba(227, 101, 136, 0.6);
+}
+
+.marker-cluster-rosa div {
+	background-color: rgba(227, 101, 136, 0.8);
+}
+
+.marker-cluster-verde {
+	background-color: rgba(107, 167, 68, 0.6);
+}
+
+.marker-cluster-verde div {
+	background-color: rgba(107, 167, 68, 0.8);
+}
 
 .marker-cluster {
-	width: 40px;
-	height: 40px;
+	width: 30px;
+	height: 30px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	background-clip: padding-box;
 	border-radius: 20px;
-	}
+}
+
 .marker-cluster div {
-	width: 30px;
-	height: 30px;
+	width: 20px;
+	height: 20px;
 	text-align: center;
 	border-radius: 15px;
 	font-size: 12px;
-	}
+}
+
 .marker-cluster span {
-	line-height: 30px;
-	}
+	line-height: 20px;
+	font-weight: 600;
+	color: white;
+}

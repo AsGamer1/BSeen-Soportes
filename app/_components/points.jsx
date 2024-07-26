@@ -8,7 +8,7 @@ import { Marker } from '@adamscybot/react-leaflet-component-marker';
 import useSupercluster from "use-supercluster";
 import "leaflet/dist/leaflet.css";
 
-export default function Points({ setIsOpen, setMarker, setPoints, setColor }) {
+export default function Points({ setIsOpen, setMarker, setPoints, setColor, groupKey }) {
   // Hook para utilizar el mapa actual
   const map = useMap();
 
@@ -16,9 +16,7 @@ export default function Points({ setIsOpen, setMarker, setPoints, setColor }) {
   const [lugares, setLugares] = useState([]);
   useEffect(() => {
     async function fetchLugares() {
-      const lugaresData = await getAllLugares();
-      // Una vez obtenidos los lugares, se encuadra el mapa según los puntos que haya
-      map.fitBounds(lugaresData.map((point) => [point.lat, point.lon]), { padding: [30, 30] })
+      const lugaresData = await getAllLugares(groupKey);
       setLugares(lugaresData);
     }
     fetchLugares()
@@ -63,7 +61,7 @@ export default function Points({ setIsOpen, setMarker, setPoints, setColor }) {
     lugares.length > 0 &&
     lugares.map(point => ({
       type: "Feature",
-      properties: { cluster: false, pointId: point.id, color: point.color, nombre: point.nombre, soportes: point.soportes },
+      properties: { cluster: false, pointId: point.id, color: point.color, nombre: point.nombre, soportes: point.soportes, grupo: point.grupo },
       geometry: {
         type: "Point",
         coordinates: [
@@ -78,14 +76,14 @@ export default function Points({ setIsOpen, setMarker, setPoints, setColor }) {
     bounds: bounds,
     zoom: zoom,
     options: {
-      radius: 0
+      radius: 80,
     }
   });
 
   return (
     clusters.map(cluster => {
       const [longitude, latitude] = cluster.geometry.coordinates;
-      const { cluster: isCluster, point_count, point_count_abbreviated, cluster_id, pointId, color, nombre, soportes } = cluster.properties
+      const { cluster: isCluster, point_count, point_count_abbreviated, cluster_id, pointId, color, soportes, grupo, nombre } = cluster.properties
 
       if (isCluster) {
         return (
@@ -94,9 +92,9 @@ export default function Points({ setIsOpen, setMarker, setPoints, setColor }) {
             position={[latitude, longitude]}
             icon={
               <div
-                className={`marker-cluster marker-cluster-${point_count < 5 ? "small" : point_count < 10 ? "medium" : "large"}`}
+                className={`marker-cluster marker-cluster-${groupKey}`}
                 onClick={() => {
-                  const expansionZoom = Math.ceil(supercluster.getClusterExpansionZoom(cluster_id)) + 1
+                  const expansionZoom = Math.ceil(supercluster.getClusterExpansionZoom(cluster_id))
                   map.flyTo([latitude, longitude], expansionZoom)
                 }}
               >
@@ -113,7 +111,7 @@ export default function Points({ setIsOpen, setMarker, setPoints, setColor }) {
         <Marker
           key={`point-${pointId}`}
           position={[latitude, longitude]}
-          icon={<Room sx={{ color: color }} fontSize="large" onClick={() => { console.log(soportes); setMarker(nombre); setPoints(soportes); setIsOpen(true); setColor(color) }} />}
+          icon={<Room sx={{ color: color }} fontSize="large" onClick={() => { setMarker({ color, grupo, nombre }); setPoints(soportes); setIsOpen(true); }} />}
         />
       );
     })

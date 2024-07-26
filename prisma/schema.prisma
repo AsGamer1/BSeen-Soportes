@@ -7,21 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Usuario: puede ser user o admin, según su rol tiene unas u otras opciones disponibles
-
-enum rol {
-  USER
-  ADMIN
-}
-
 model usuario {
   id       String @id @default(cuid())
   nombre   String @unique
   rol      rol    @default(USER)
   password String
 }
-
-// Lugar: punto del mapa categorizado por grupos con colores
 
 model grupo {
   id       String  @id @default(cuid())
@@ -40,15 +31,6 @@ model lugar {
   item     soporte[]
 
   @@unique([lat, lon])
-}
-
-// Soporte: medio por el cuál se distribuye la publicidad
-// Tipo: describe el soporte: pantalla vertical, pantalla horizontal, videowall, valla, mural
-// Espacio: hueco en el que se puede poner publicidad de los clientes: está ocupado el hueco? quién lo ocupa? hasta cuándo? desde cuándo?
-
-enum categoria {
-  DIGITAL
-  CONVENCIONAL
 }
 
 model tipo {
@@ -71,9 +53,19 @@ model soporte {
   id         String  @id @default(cuid())
   cantidad   Int
   espacio_id String
-  espacio    espacio @relation(fields: [espacio_id], references: [id])
   tipo_id    String
-  tipo       tipo    @relation(fields: [tipo_id], references: [id])
   lugar_id   String
+  espacio    espacio @relation(fields: [espacio_id], references: [id])
   lugar      lugar   @relation(fields: [lugar_id], references: [id])
+  tipo       tipo    @relation(fields: [tipo_id], references: [id])
+}
+
+enum rol {
+  USER
+  ADMIN
+}
+
+enum categoria {
+  DIGITAL
+  CONVENCIONAL
 }
