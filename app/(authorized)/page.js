@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Drawer, Stack, Typography } from "@mui/material";
+import { Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import dynamic from 'next/dynamic'
 const Map = dynamic(() => import('@/app/_components/map'), { ssr: false })
@@ -21,19 +21,33 @@ export default function Dashboard() {
     <Stack sx={{ padding: 2, flexGrow: 1, flexShrink: 1, width: "80%", alignSelf: "center" }}>
       <Map setSelectedLugar={setSelectedLugar} setIsOpen={setIsOpen} setSelectedSoportes={setSelectedSoportes} />
       <Drawer anchor="right" open={isOpen} onClose={DrawerClose}>
-        <Stack sx={{ width: "calc(min(320px, 70vw))", overflow: "hidden" }}>
-          <Box sx={{ padding: 3, color: "white", bgcolor: selectedLugar?.color, minHeight: "2rem", textAlign: "center" }}>
+        <Stack sx={{ width: "calc(min(320px, 70vw))", height: "50%", overflow: "hidden" }}>
+          <Box sx={{ bgcolor: selectedLugar?.color, padding: 3, color: "white", minHeight: "2rem", textAlign: "center" }}>
             {selectedLugar?.nombre?.split("/n").map(lugar =>
               <Typography key={lugar} variant="h6">{lugar}</Typography>
             )}
-            <Typography>{selectedLugar?.grupo}</Typography>
+            <Typography variant="body2">{selectedLugar?.grupo}</Typography>
           </Box>
           {selectedSoportes?.map(soporte =>
-            <>
-              <Typography>{soporte.nombre}</Typography>
-              <Typography>{soporte.tipo.nombre}</Typography>
-            </>
+            <List>
+              <ListItem sx={{ justifyContent: "space-evenly" }}>
+                <ListItemText sx={{ flex: "unset" }}>{soporte.cantidad}</ListItemText>
+                <ListItemText sx={{ flex: "unset" }}>{soporte.tipo.nombre}</ListItemText>
+              </ListItem>
+            </List>
           )}
+        </Stack>
+        <Divider />
+        <Stack sx={{ height: "50%" }}>
+          <List>
+            <ListItem>
+              <ListItemButton>
+                <ListItemText>
+                    
+                </ListItemText>
+              </ListItemButton>
+            </ListItem>
+          </List>
         </Stack>
       </Drawer>
     </Stack>

@@ -40,24 +40,32 @@ model tipo {
   item      soporte[]
 }
 
-model espacio {
-  id             String    @id @default(cuid())
-  disponibilidad Boolean
-  cliente        String?
-  fecha_inicio   DateTime?
-  fecha_fin      DateTime?
-  soporte        soporte[]
+model cliente {
+  id      String    @id @default(cuid())
+  nombre  String
+  soporte espacio[]
 }
 
 model soporte {
-  id         String  @id @default(cuid())
+  id         String    @id @default(cuid())
   cantidad   Int
-  espacio_id String
+  espacio_id String?
   tipo_id    String
   lugar_id   String
-  espacio    espacio @relation(fields: [espacio_id], references: [id])
-  lugar      lugar   @relation(fields: [lugar_id], references: [id])
-  tipo       tipo    @relation(fields: [tipo_id], references: [id])
+  lugar      lugar     @relation(fields: [lugar_id], references: [id])
+  tipo       tipo      @relation(fields: [tipo_id], references: [id])
+  espacio    espacio[]
+}
+
+model espacio {
+  espacio      cliente   @relation(fields: [espacioId], references: [id])
+  espacioId    String
+  soporte      soporte   @relation(fields: [soporteId], references: [id])
+  soporteId    String
+  fecha_inicio DateTime?
+  fecha_fin    DateTime?
+
+  @@id([espacioId, soporteId])
 }
 
 enum rol {

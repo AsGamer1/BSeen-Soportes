@@ -9,7 +9,17 @@ async function getColorFromLugar(lugar) {
 
 async function getSoportesFromLugar(lugar) {
   const soportes = await db.soporte.findMany({ where: { lugar_id: lugar.id } })
-  return { ...lugar, soportes: soportes }
+  const soportesTipo = await Promise.all(soportes.map(async (soporte) => await getTipoFromSoporte(soporte)))
+  return { ...lugar, soportes: soportesTipo }
+}
+
+async function getTipoFromSoporte(soporte) {
+  const tipo = await db.tipo.findUnique({ where: { id: soporte.tipo_id } })
+  return { ...soporte, tipo: tipo }
+}
+
+async function getEspaciosFromSoporte(soporte) {
+  
 }
 
 export async function getAllLugares(groupKey) {
