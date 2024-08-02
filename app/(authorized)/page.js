@@ -28,14 +28,14 @@ export default function Dashboard() {
             )}
             <Typography variant="body2">{selectedLugar?.grupo}</Typography>
           </Box>
-          {selectedSoportes?.map(soporte =>
-            <List>
+          <List>
+            {selectedSoportes?.map(soporte =>
               <ListItem sx={{ justifyContent: "space-evenly" }}>
                 <ListItemText sx={{ flex: "unset" }}>{soporte.cantidad}</ListItemText>
                 <ListItemText sx={{ flex: "unset" }}>{soporte.tipo.nombre}</ListItemText>
               </ListItem>
-            </List>
-          )}
+            )}
+          </List>
         </Stack>
         <Divider />
         <Stack sx={{ height: "50%" }}>
@@ -43,7 +43,7 @@ export default function Dashboard() {
             <ListItem>
               <ListItemButton>
                 <ListItemText>
-                    
+
                 </ListItemText>
               </ListItemButton>
             </ListItem>

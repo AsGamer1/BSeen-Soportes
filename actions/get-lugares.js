@@ -19,7 +19,8 @@ async function getTipoFromSoporte(soporte) {
 }
 
 async function getEspaciosFromSoporte(soporte) {
-  
+  const espacio = await db.espacio.findMany({ where: { soporteId: soporte.id } })
+  return { ...soporte, espacio: espacio }
 }
 
 export async function getAllLugares(groupKey) {
@@ -30,6 +31,7 @@ export async function getAllLugares(groupKey) {
         await db.lugar.findMany();
     const lugaresGrupos = await Promise.all(lugares.map(async (lugar) => await getColorFromLugar(lugar)))
     const lugaresGruposSoportes = await Promise.all(lugaresGrupos.map(async (lugar) => await getSoportesFromLugar(lugar)))
+    // not working --> const lugaresFull = await Promise.all(lugaresGruposSoportes.map(async (soporte) => await getEspaciosFromSoporte(soporte)))
     return lugaresGruposSoportes
   } catch (error) {
     return null
